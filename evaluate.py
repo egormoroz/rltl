@@ -2,6 +2,9 @@ import stable_baselines3 as sb3
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 import numpy as np
+from tqdm import tqdm
+
+import glob
 
 from env1x1 import CityFlow1x1
 
@@ -31,20 +34,22 @@ env = Monitor(env)
 
 policies = {
     'random': RandomPolicy(env.action_space),
-    'mlp': sb3.PPO.load('ppo_mlp'),
 }
 
-for interval in range(1, 30 + 1):
-    policies[f'circular_{interval}'] = CircularPolicy(env.action_space, interval)
+for path in glob.glob('ppo_*'):
+    policies[str(path)] = sb3.PPO.load(path)
+
+# for interval in range(1, 30 + 1):
+#     policies[f'circular_{interval}'] = CircularPolicy(env.action_space, interval)
 
 results = []
-for name, policy in policies.items():
+for name, policy in tqdm(policies.items()):
     mean, std = evaluate_policy(policy, env, 
                                 n_eval_episodes=10, deterministic=True)
     results.append((name, mean, std))
 
 
-results.sort(key=lambda x: x[1] - x[2], reverse=True)
+results.sort(key=lambda x: x[1], reverse=True)
 
 n = 5
 print(f'Top {n} policies')
