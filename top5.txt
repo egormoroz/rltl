@@ -1,0 +1,6 @@
+Top 5 policies
+ppo_mlp.zip 5552.00 +/- 0.00
+ppo_mlp_penalty.zip 5552.00 +/- 0.00
+ppo_mlp_penalty_half.zip 5552.00 +/- 0.00
+ppo_mlp_penalty2.zip 6164.00 +/- 0.00
+circular_1 48515.70 +/- 398.22
